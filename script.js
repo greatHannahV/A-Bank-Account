@@ -60,9 +60,14 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function(movements) {
-    containerMovements.innerHTML = ''; //ereased our page
-    movements.forEach(function(mov, i) {
+const displayMovements = function(movements, sort = false) {
+    //ereased our page
+    containerMovements.innerHTML = '';
+    //sclice  used to create a shallow copy
+    const movs = sort ? movements.slice().sort(((a, b) => a - b)) : movements
+
+
+    movs.forEach(function(mov, i) {
         const type = mov > 0 ? 'deposit' : 'withdrawal';
         const html = ` <div class="movements__row">
       <div class="movements__type movements__type--${type}">${i} ${type}</div>
@@ -195,18 +200,7 @@ btnTransfer.addEventListener('click', function(e) {
     }
 })
 
-btnLoan.addEventListener('click', function(e) {
-    e.preventDefault()
-    const loan = Number(inputLoanAmount.value)
 
-    currentAccount.movements.push(loan)
-    updateUI(currentAccount)
-
-    inputTransferAmount.value = inputTransferTo.value = ''
-    inputTransferAmount.blur()
-
-
-})
 btnClose.addEventListener('click', function(e) {
     e.preventDefault()
 
@@ -228,5 +222,68 @@ btnClose.addEventListener('click', function(e) {
     inputLoginPin.blur();
 })
 
+//loan
+btnLoan.addEventListener('click', function(e) {
+    e.preventDefault()
+    inputLoanAmount.placeholder = '';
+
+    const loan = Number(inputLoanAmount.value)
+        //some of them>10%
+    if (loan > 0 && currentAccount.movements.some(mov => mov >= loan * 0.1)) {
+        currentAccount.movements.push(loan)
+        updateUI(currentAccount)
+
+
+
+    } else {
+        inputLoanAmount.value = ''
+        inputLoanAmount.placeholder = 'Denied';
+
+
+    }
+
+
+    inputLoanAmount.value = ''
+    inputLoanAmount.blur()
+
+
+
+})
+let sorted = false;
+btnSort.addEventListener('click', function(e) {
+    e.preventDefault()
+    displayMovements(currentAccount.movements, !sorted)
+    sorted = !sorted;
+})
+
+
+
+
+
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+
+
+// const allSum = accounts.flatMap(acc => acc.movements).reduce((acc, mov) => acc + mov, 0);
+// console.log(allSum);
+
+
+//return <0, A, B or return>0, B,A
+// .sort((a, b) => a-b)
+//sorting
+
+
+
+// const y = Array.from({ length: 7 }, () => 2)
+// const z = Array.from({ length: 8 }, (_, i) => i + 1)
+// const z = Array.from({ length: 100 }, () => Math.trunc(Math.random() * 100) + 1)
+// console.log(z);
+
+
+labelBalance.addEventListener("click", function() {
+    const movementsUI = Array.from(document.querySelectorAll('.movements__value'),
+        el => Number(el.textContent.replace('€', "")))
+    console.log(movementsUI);
+
+})
