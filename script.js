@@ -227,7 +227,7 @@ btnLoan.addEventListener('click', function(e) {
     e.preventDefault()
     inputLoanAmount.placeholder = '';
 
-    const loan = Number(inputLoanAmount.value)
+    const loan = Math.floor(inputLoanAmount.value)
         //some of them>10%
     if (loan > 0 && currentAccount.movements.some(mov => mov >= loan * 0.1)) {
         currentAccount.movements.push(loan)
@@ -281,9 +281,42 @@ btnSort.addEventListener('click', function(e) {
 // console.log(z);
 
 
-labelBalance.addEventListener("click", function() {
-    const movementsUI = Array.from(document.querySelectorAll('.movements__value'),
-        el => Number(el.textContent.replace('€', "")))
-    console.log(movementsUI);
+// labelBalance.addEventListener("click", function() {
+//     const movementsUI = Array.from(document.querySelectorAll('.movements__value'),
+//         el => Number(el.textContent.replace('€', "")))
+//     console.log(movementsUI);
 
-})
+// })
+
+// const bankDepositSum = accounts
+//     .flatMap(acc => acc.movements.filter(mov => mov > 0))
+//     .reduce((acc, mov) => acc + mov, 0);
+
+// const numDeposits1000 = accounts.flatMap(acc => acc.movements).filter(mov => mov >= 1000).length
+// const numDeposits1000 = accounts.flatMap(acc => acc.movements)
+//     .reduce((count, cur) => (cur >= 1000 ? count + 1 : count), 0)
+// const numDeposits1000 = accounts.flatMap(acc => acc.movements)
+//     .reduce((count, cur) => (cur >= 1000 ? ++count : count), 0)
+// console.log(numDeposits1000);
+
+//
+// const { deposit, withdraws } = accounts
+//     .flatMap(acc => acc.movements).reduce((sums, cur) => {
+//         // cur > 0 ? sums.deposit += cur : sums.withdraws += cur
+//         sums[cur > 0 ? 'deposit' : 'withdraws'] += cur
+//         return sums
+
+//     }, { deposit: 0, withdraws: 0 })
+// console.log(deposit, withdraws);
+
+
+// const numDepositsum = accounts.reduce((count, acc) => {
+//     return acc.movements.reduce((sum, cur) => {
+//         sum[cur > 0 ? 'deposit' : 'withdraws'] += cur
+//         return sum
+//     }, count)
+
+// }, { deposit: 0, withdraws: 0 })
+// console.log(numDepositsum);
+
+//
